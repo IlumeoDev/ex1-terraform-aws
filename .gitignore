@@ -12,7 +12,7 @@ crash.log
 crash.*.log
 
 # Sensitive variable files — never commit real credentials
-# terraform.tfvars
+terraform.tfvars
 *.auto.tfvars
 
 # Override files

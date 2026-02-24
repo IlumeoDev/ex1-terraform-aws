@@ -1,5 +1,0 @@
-access_key     = "YOUR_AWS_ACCESS_KEY_ID"
-secret_key     = "YOUR_AWS_SECRET_ACCESS_KEY"
-region         = "eu-west-3"
-ami_id         = "ami-04df1508c6be5879e"
-ssh_public_key = "ssh-rsa AAAA..."
