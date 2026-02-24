@@ -1,12 +1,3 @@
-terraform {
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 5.0"
-    }
-  }
-}
-
 # ─── VPC Module ─────────────────────────────────────────────────────────────
 module "vpc" {
   source      = "./modules/vpc"
@@ -14,6 +5,7 @@ module "vpc" {
   vpc_cidr    = "10.0.0.0/16"
   subnet_cidr = "10.0.1.0/24"
 }
+
 
 # ─── Security Group Module ───────────────────────────────────────────────────
 module "security_group" {
@@ -32,4 +24,21 @@ module "ec2" {
   security_group_id = module.security_group.security_group_id
   key_name          = "deployer-key"
   ssh_public_key    = var.ssh_public_key
+}
+
+resource "local_file" "ansible_inventory" {
+  filename = "/home/msaillard/ansible_class/inventory.ini"
+  content  = <<-EOT
+[web]
+aws1 ansible_host=${module.ec2.instance_public_dns}
+
+[db]
+aws1 ansible_host=${module.ec2.instance_public_dns}
+
+[all:vars]
+ansible_python_interpreter=/usr/bin/python3
+ansible_connection=ssh
+ansible_user=ubuntu
+ssh_public_key="${var.ssh_public_key}"
+EOT
 }
